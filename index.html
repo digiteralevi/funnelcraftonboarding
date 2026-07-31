@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FunnelCraft™ — Setup Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0a13;
+    --surface:#151222;
+    --surface-2:#1c1830;
+    --border:rgba(255,255,255,0.08);
+    --border-2:rgba(255,255,255,0.14);
+    --text:#f3f0ff;
+    --muted:#9c93be;
+    --muted-2:#6f6690;
+    --accent:#8b6cff;
+    --accent-soft:rgba(139,108,255,0.12);
+    --gold:#d9a94a;
+    --gold-soft:rgba(217,169,74,0.12);
+    --success:#33d3a0;
+    --success-soft:rgba(51,211,160,0.12);
+    --danger:#ef6f6f;
+    --radius:14px;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(139,108,255,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(217,169,74,0.06), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    min-height:100vh;
+    line-height:1.6;
+  }
+  ::selection{ background:var(--accent); color:#fff; }
+  a{ color:var(--accent); }
+
+  /* ---------- layout ---------- */
+  .shell{ display:flex; min-height:100vh; }
+
+  .sidebar{
+    width:290px; flex-shrink:0;
+    background:rgba(21,18,34,0.6);
+    border-right:1px solid var(--border);
+    padding:28px 20px 24px;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; padding:4px 8px 26px; }
+  .brand-mark{
+    width:36px; height:36px; border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),#5b3fd6);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:16px; color:#fff;
+    box-shadow:0 4px 14px rgba(139,108,255,0.35);
+  }
+  .brand-name{ font-family:var(--font-display); font-weight:700; font-size:15.5px; letter-spacing:.2px; }
+  .brand-name span{ color:var(--accent); }
+  .brand-sub{ font-size:11px; color:var(--muted-2); margin-top:1px; }
+
+  .nav-group-label{
+    font-size:10.5px; text-transform:uppercase; letter-spacing:1.4px;
+    color:var(--muted-2); font-weight:600; margin:20px 10px 8px;
+  }
+  .rail{ position:relative; }
+  .nav-item{
+    position:relative;
+    display:flex; align-items:center; gap:12px;
+    padding:9px 10px; border-radius:10px;
+    color:var(--muted); font-size:13.5px; font-weight:500;
+    cursor:pointer; transition:background .15s, color .15s;
+    user-select:none;
+  }
+  .nav-item:hover{ background:rgba(255,255,255,0.04); color:var(--text); }
+  .nav-item.active{ background:var(--accent-soft); color:var(--text); }
+  .nav-dot{
+    width:22px; height:22px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:10px; font-weight:600;
+    background:var(--surface-2); border:1.5px solid var(--border-2); color:var(--muted-2);
+    transition:all .2s;
+  }
+  .nav-item.active .nav-dot{ border-color:var(--accent); color:var(--accent); background:rgba(139,108,255,0.15); }
+  .nav-item.done .nav-dot{ background:var(--success); border-color:var(--success); color:#08251c; }
+  .nav-item.done .nav-dot::after{ content:'✓'; }
+  .nav-item.done .nav-dot span{ display:none; }
+  .nav-line{
+    position:absolute; left:20.5px; width:1.5px;
+    background:var(--border-2); z-index:0;
+  }
+  .nav-line.filled{ background:linear-gradient(var(--success),var(--accent)); }
+
+  /* ---------- main ---------- */
+  .main{ flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; padding:44px 32px 80px; }
+  .panel{ width:100%; max-width:720px; }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:11px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase;
+    color:var(--gold); background:var(--gold-soft); border:1px solid rgba(217,169,74,0.3);
+    padding:6px 12px; border-radius:999px; margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(26px,3.4vw,36px); line-height:1.15; letter-spacing:-.3px;
+    margin-bottom:14px;
+  }
+  h1 .accent{ color:var(--accent); }
+  .lede{ color:var(--muted); font-size:15.5px; max-width:56ch; margin-bottom:26px; }
+
+  .bullets{ list-style:none; margin:22px 0 30px; display:flex; flex-direction:column; gap:11px; }
+  .bullets li{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:#d9d4ec; }
+  .bullets li::before{ content:'●'; color:var(--accent); font-size:8px; margin-top:7px; }
+
+  .callout{
+    border-radius:var(--radius); padding:16px 18px; margin:18px 0;
+    display:flex; gap:12px; align-items:flex-start; font-size:13.5px;
+    border:1px solid var(--border);
+  }
+  .callout.info{ background:var(--accent-soft); border-color:rgba(139,108,255,0.25); }
+  .callout.warn{ background:var(--gold-soft); border-color:rgba(217,169,74,0.3); }
+  .callout.done{ background:var(--success-soft); border-color:rgba(51,211,160,0.3); }
+  .callout .ic{ font-size:16px; flex-shrink:0; margin-top:1px; }
+  .callout b{ color:var(--text); }
+  .callout .muted-line{ color:var(--muted); margin-top:3px; }
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px 24px; margin:18px 0;
+  }
+  .card h3{ font-family:var(--font-display); font-size:15.5px; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .card p{ color:var(--muted); font-size:13.8px; margin-bottom:8px; }
+  .card ol, .card ul{ margin:10px 0 4px 18px; color:#d9d4ec; font-size:13.8px; display:flex; flex-direction:column; gap:7px; }
+
+  .steplist{ counter-reset:step; margin:20px 0; display:flex; flex-direction:column; gap:4px; }
+  .steprow{ counter-increment:step; display:flex; gap:14px; padding:14px 4px; border-bottom:1px solid var(--border); }
+  .steprow:last-child{ border-bottom:none; }
+  .steprow::before{
+    content:counter(step); font-family:var(--font-mono); font-size:12px; font-weight:600;
+    width:24px; height:24px; border-radius:50%; background:var(--surface-2); border:1px solid var(--border-2);
+    color:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;
+  }
+  .steprow .st-body b{ display:block; font-size:14px; margin-bottom:2px; }
+  .steprow .st-body span{ color:var(--muted); font-size:13.2px; }
+
+  .field-target{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:12px;
+    background:rgba(139,108,255,0.1); color:var(--accent); border:1px solid rgba(139,108,255,0.25);
+    padding:3px 9px; border-radius:6px; margin-top:6px;
+  }
+
+  .code-block{
+    position:relative; background:#09080f; border:1px solid var(--border-2); border-radius:10px;
+    padding:16px 46px 16px 16px; margin:12px 0;
+    font-family:var(--font-mono); font-size:12.6px; color:#c9c2e6; overflow-x:auto; white-space:pre;
+  }
+  .copy-btn{
+    position:absolute; top:10px; right:10px; background:var(--surface-2); border:1px solid var(--border-2);
+    color:var(--muted); font-size:11px; font-family:var(--font-body); font-weight:600;
+    padding:5px 9px; border-radius:7px; cursor:pointer; transition:.15s;
+  }
+  .copy-btn:hover{ color:var(--text); border-color:var(--accent); }
+  .copy-btn.copied{ color:var(--success); border-color:var(--success); }
+
+  .link-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; margin:10px 0; font-size:13.5px;
+  }
+  .link-row a{ font-weight:600; text-decoration:none; }
+  .link-row a:hover{ text-decoration:underline; }
+  .link-row .tag{ font-size:10.5px; color:var(--muted-2); font-family:var(--font-mono); }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+  @media (max-width:600px){ .grid2{ grid-template-columns:1fr; } }
+  .opt-card{
+    border:1px solid var(--border); border-radius:12px; padding:14px 16px; background:var(--surface);
+  }
+  .opt-card b{ font-size:13.8px; display:block; margin-bottom:4px; }
+  .opt-card span{ font-size:12.5px; color:var(--muted); }
+
+  .checklist{ display:flex; flex-direction:column; gap:10px; margin:18px 0; }
+  .chk-item{
+    display:flex; align-items:flex-start; gap:12px; padding:13px 15px;
+    border:1px solid var(--border); border-radius:11px; background:var(--surface); cursor:pointer;
+    transition:.15s;
+  }
+  .chk-item:hover{ border-color:var(--border-2); }
+  .chk-item.checked{ border-color:rgba(51,211,160,0.4); background:var(--success-soft); }
+  .chk-box{
+    width:19px; height:19px; border-radius:6px; border:1.5px solid var(--border-2); flex-shrink:0; margin-top:1px;
+    display:flex; align-items:center; justify-content:center; font-size:12px; color:transparent; transition:.15s;
+  }
+  .chk-item.checked .chk-box{ background:var(--success); border-color:var(--success); color:#08251c; }
+  .chk-item.checked .chk-box::after{ content:'✓'; }
+  .chk-text b{ font-size:13.8px; display:block; }
+  .chk-text span{ font-size:12.5px; color:var(--muted); }
+  .chk-item.checked .chk-text b{ text-decoration:line-through; color:var(--muted); }
+
+  .nav-buttons{ display:flex; justify-content:space-between; align-items:center; margin-top:40px; }
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:14px; border-radius:10px;
+    padding:12px 22px; border:none; cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{ background:linear-gradient(135deg,var(--accent),#6a4fe0); color:#fff; box-shadow:0 6px 18px rgba(139,108,255,.3); }
+  .btn-primary:hover{ filter:brightness(1.08); transform:translateY(-1px); }
+  .btn-ghost{ background:transparent; color:var(--muted); border:1px solid var(--border-2); }
+  .btn-ghost:hover{ color:var(--text); border-color:var(--muted); }
+  .btn:disabled{ opacity:.35; cursor:not-allowed; }
+  .step-counter{ font-size:12.5px; color:var(--muted-2); font-family:var(--font-mono); }
+
+  .final-badge{
+    width:64px; height:64px; border-radius:50%; margin:0 auto 22px;
+    background:linear-gradient(135deg,var(--success),#1fa584);
+    display:flex; align-items:center; justify-content:center; font-size:28px;
+    box-shadow:0 10px 30px rgba(51,211,160,.35);
+  }
+
+  @media (max-width:860px){
+    .shell{ flex-direction:column; }
+    .sidebar{ width:100%; height:auto; position:relative; border-right:none; border-bottom:1px solid var(--border); }
+    .main{ padding:32px 18px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">FC</div>
+      <div>
+        <div class="brand-name">Funnel<span>Craft</span>™</div>
+        <div class="brand-sub">Buyer Setup Guide</div>
+      </div>
+    </div>
+
+    <div class="nav-group-label">Get Started</div>
+    <div class="rail" id="rail"></div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="panel" id="panel"></div>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   STEP DATA
+   ============================================================ */
+const STEPS = [
+  { group:"Get Started", title:"Welcome", render: renderWelcome },
+  { group:"Get Started", title:"Get Your Gemini API Key", render: renderGemini },
+  { group:"Set Up Payment", title:"Your Payment Link", render: renderPayment },
+  { group:"Set Up Payment", title:"Google Sheets (Leads)", render: renderSheets },
+  { group:"Set Up Payment", title:"Tracking Pixels", render: renderPixels },
+  { group:"Configure", title:"Messenger (Optional)", render: renderMessenger },
+  { group:"Configure", title:"Deploy Online", render: renderDeploy },
+  { group:"Configure", title:"Save Your License Key", render: renderLicense },
+  { group:"Go Live", title:"Final Checklist", render: renderChecklist },
+  { group:"Go Live", title:"You're Ready! 🎉", render: renderDone },
+];
+
+const PROGRESS_KEY = 'fc_onboarding_progress_v1';
+let done = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '[]');
+let current = 0;
+
+function saveProgress(){ localStorage.setItem(PROGRESS_KEY, JSON.stringify(done)); }
+function markDone(i){ if(!done.includes(i)){ done.push(i); saveProgress(); } }
+
+/* ============================================================
+   SIDEBAR RENDER
+   ============================================================ */
+function renderSidebar(){
+  const rail = document.getElementById('rail');
+  let html = '';
+  let lastGroup = null;
+  STEPS.forEach((s, i) => {
+    if (s.group !== lastGroup){
+      html += `<div class="nav-group-label" style="${i===0?'display:none':''}">${s.group}</div>`;
+      lastGroup = s.group;
+    }
+    const cls = ['nav-item'];
+    if (i === current) cls.push('active');
+    if (done.includes(i)) cls.push('done');
+    html += `<div class="${cls.join(' ')}" onclick="goTo(${i})">
+      <div class="nav-dot"><span>${i+1}</span></div>
+      <div>${s.title}</div>
+    </div>`;
+  });
+  rail.innerHTML = html;
+}
+
+function goTo(i){
+  current = i;
+  renderSidebar();
+  renderPanel();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function next(){ markDone(current); if (current < STEPS.length-1) goTo(current+1); }
+function back(){ if (current > 0) goTo(current-1); }
+
+function navFooter(nextLabel){
+  return `<div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="back()" ${current===0?'disabled':''}>← Back</button>
+    <span class="step-counter">Step ${current+1} of ${STEPS.length}</span>
+    <button class="btn btn-primary" onclick="next()">${nextLabel || (current===STEPS.length-1 ? 'Done ✓' : 'Next →')}</button>
+  </div>`;
+}
+
+function copyText(btn, text){
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = orig; btn.classList.remove('copied'); }, 1600);
+  });
+}
+
+function renderPanel(){
+  document.getElementById('panel').innerHTML = STEPS[current].render();
+}
+
+/* ============================================================
+   STEP CONTENT
+   ============================================================ */
+function renderWelcome(){
+  return `
+    <div class="eyebrow">✦ Premium Setup Guide</div>
+    <h1>Welcome to <span class="accent">FunnelCraft™</span>.</h1>
+    <p class="lede">This is your step-by-step guide to getting everything set up correctly — from the AI generator, to your payment link, to putting your sales page live online. No coding required.</p>
+
+    <ul class="bullets">
+      <li>AI-powered generation of your complete multi-page sales funnel</li>
+      <li>Your own payment link — money goes straight to you, nothing routes through us</li>
+      <li>Leads and buyers tracked automatically with Google Sheets</li>
+      <li>Facebook / TikTok pixel tracking for smarter ad targeting</li>
+      <li>Free hosting — no monthly fee to put your page online</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="ic">⏱️</div>
+      <div><b>Estimated time:</b> 30–60 minutes the first time through. Follow each step in order, and you'll be live today.</div>
+    </div>
+
+    <div class="card" style="border-color:rgba(139,108,255,0.35);">
+      <h3>🚀 Access FunnelCraft™</h3>
+      <p>This is the tool itself — open it in a new tab and keep it alongside this guide as you go.</p>
+      <div class="link-row"><a href="https://funnelcraft-ph.vercel.app/" target="_blank" rel="noopener">funnelcraft-ph.vercel.app ↗</a><span class="tag">OPEN APP</span></div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Before You Start</h3>
+      <p>You'll need accounts on a few free platforms. All 100% free. Just have your email address ready.</p>
+      <p><b>What you'll use:</b> Google AI Studio, GitHub, Vercel, Google Sheets, and whichever payment method you prefer (GCash, Maya, PayPal, Stripe, or others).</p>
+    </div>
+
+    ${navFooter("Let's start →")}
+  `;
+}
+
+function renderGemini(){
+  return `
+    <div class="eyebrow">Step 1</div>
+    <h1>Get your <span class="accent">Gemini API Key</span>.</h1>
+    <p class="lede">This is the "brain" of FunnelCraft — it's what powers the AI that writes your copy and builds your entire sales page. It's free.</p>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Go to Google AI Studio</b><span>Sign in with any Google account.</span>
+        <div class="link-row"><a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey ↗</a><span class="tag">FREE</span></div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Click "Create API Key"</b><span>Choose "Create API key in new project" if this is your first time.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Copy the key</b><span>It starts with <code style="font-family:var(--font-mono);color:var(--gold);">AIza...</code> — don't share this publicly.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Paste it into FunnelCraft</b><span>At the top of the FunnelCraft tool, there's a "Gemini API Key" field — paste it there.</span>
+        <div class="field-target">📍 Field: Gemini API Key</div>
+      </div></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="ic">⚠️</div>
+      <div><b>The free key has a daily limit.</b><div class="muted-line">If you see a "high demand" or "quota exceeded" error, just wait a few minutes or try again tomorrow. This isn't a bug — it's normal on the free tier.</div></div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderPayment(){
+  return `
+    <div class="eyebrow">Step 2</div>
+    <h1>Set up your <span class="accent">Payment Link</span>.</h1>
+    <p class="lede">This is where your buyers' payments go directly — no middleman, no commission to us. Choose whichever method you're most comfortable with.</p>
+
+    <div class="grid2">
+      <div class="opt-card">
+        <b>💳 PayPal / Stripe</b>
+        <span>Create a "Payment Link" from their dashboard. Easiest if you have international buyers.</span>
+      </div>
+      <div class="opt-card">
+        <b>📱 GCash / Maya</b>
+        <span>No direct "link" option, but you can use PayMongo or Xendit to generate a checkout link.</span>
+      </div>
+      <div class="opt-card">
+        <b>🏦 Direct / Manual</b>
+        <span>Upload your GCash/Maya/Bank QR code — buyers will see it in a popup when they click your CTA.</span>
+      </div>
+      <div class="opt-card">
+        <b>🔗 Systeme.io / Wise</b>
+        <span>If you already have an existing checkout system, just paste that link in.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 Easiest Option (Recommended for PH)</h3>
+      <p>If you don't have an existing payment gateway, the fastest route is: choose <b>"Direct / Manual"</b> in FunnelCraft, then upload a <b>screenshot of your QR code</b> for GCash/Maya. This automatically appears as a popup when a buyer clicks "Buy Now" — telling them to scan and send proof of payment.</p>
+    </div>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Choose your payment method</b><span>In the "Payment" tab of FunnelCraft, click the matching icon.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Paste your link (or upload your QR code)</b><span>Depending on which method you chose.</span>
+        <div class="field-target">📍 Field: Payment Link / QR Code</div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Test the link yourself</b><span>Click your own link to confirm the amount and redirect are correct.</span></div></div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderSheets(){
+  return `
+    <div class="eyebrow">Step 3</div>
+    <h1>Capture leads with <span class="accent">Google Sheets</span>.</h1>
+    <p class="lede">When someone fills out an opt-in or checkout form on your sales page, it's written automatically to your own Google Sheet — free, and no extra app to install.</p>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Create a new Google Sheet</b><span>Go to <a href="https://sheets.google.com" target="_blank" rel="noopener">sheets.google.com ↗</a> and create a blank sheet.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Open Apps Script</b><span>From the menu: <b>Extensions → Apps Script</b>.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Delete the contents, and paste this code in:</b>
+        <div class="code-block" id="gs-code">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    new Date(),
+    data.email || '',
+    data.name || '',
+    data.source || ''
+  ]);
+  return ContentService.createTextOutput(
+    JSON.stringify({ status: 'ok' })
+  ).setMimeType(ContentService.MimeType.JSON);
+}</div>
+        <button class="copy-btn" onclick="copyText(this, document.getElementById('gs-code').textContent)">Copy</button>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Deploy as a Web App</b><span><b>Deploy → New deployment → Web app.</b> Under "Who has access," choose <b>"Anyone."</b></span></div></div>
+      <div class="steprow"><div class="st-body"><b>Copy the Web App URL</b><span>It'll look like this: <code style="font-family:var(--font-mono);color:var(--gold);font-size:12px;">https://script.google.com/macros/s/.../exec</code></span></div></div>
+      <div class="steprow"><div class="st-body"><b>Paste it into FunnelCraft</b><span>In the Opt-in / Checkout embed field.</span>
+        <div class="field-target">📍 Field: Opt-in Embed Code / Apps Script URL</div>
+      </div></div>
+    </div>
+
+    <div class="callout info">
+      <div class="ic">💡</div>
+      <div>This step is optional — you can skip it if everyone will pay directly through your payment link, with proof of payment as the only follow-up you need.</div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderPixels(){
+  return `
+    <div class="eyebrow">Step 4 — Optional</div>
+    <h1>Set up your <span class="accent">Tracking Pixels</span>.</h1>
+    <p class="lede">To understand who's visiting your page and run smarter ads (retargeting), connect these pixels.</p>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Meta (Facebook) Pixel</b><span>In Facebook Events Manager, create a Pixel and copy the Pixel ID (just a number).</span>
+        <div class="link-row"><a href="https://business.facebook.com/events_manager2" target="_blank" rel="noopener">business.facebook.com/events_manager2 ↗</a></div>
+        <div class="field-target">📍 Field: Meta Pixel ID</div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>TikTok Pixel</b><span>In TikTok Ads Manager → Assets → Events, create a Pixel and copy the Pixel ID.</span>
+        <div class="link-row"><a href="https://ads.tiktok.com" target="_blank" rel="noopener">ads.tiktok.com ↗</a></div>
+        <div class="field-target">📍 Field: TikTok Pixel ID</div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Google Analytics (GA4)</b><span>Create a property in Google Analytics, copy the Measurement ID (starts with "G-").</span>
+        <div class="link-row"><a href="https://analytics.google.com" target="_blank" rel="noopener">analytics.google.com ↗</a></div>
+        <div class="field-target">📍 Field: GA4 Measurement ID</div>
+      </div></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="ic">⚠️</div>
+      <div>This step is optional. If you're not running ads yet, feel free to skip it and come back later.</div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderMessenger(){
+  return `
+    <div class="eyebrow">Step 5 — Optional</div>
+    <h1>Connect your <span class="accent">Messenger</span>.</h1>
+    <p class="lede">If you have an order bump or want to make it easier for buyers to send proof of payment, set this up to route buyers straight to your Messenger.</p>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Get your FB Page link</b><span>Copy your Page username, e.g. <code style="font-family:var(--font-mono);color:var(--gold);">m.me/yourpagename</code></span></div></div>
+      <div class="steprow"><div class="st-body"><b>Paste it into FunnelCraft</b><span>In the "Contact Messenger" field.</span>
+        <div class="field-target">📍 Field: Contact Messenger</div>
+      </div></div>
+    </div>
+
+    <div class="callout info">
+      <div class="ic">💡</div>
+      <div><b>Note:</b> When this field is filled in AND you have an "Order Bump" set up, buyers will automatically be sent to Messenger before checkout when they select the bump. If you don't want this behavior, just leave the Order Bump Offer Name field blank.</div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderDeploy(){
+  return `
+    <div class="eyebrow">Step 6</div>
+    <h1>Deploy your sales page <span class="accent">online</span>.</h1>
+    <p class="lede">Once you've built your page in FunnelCraft, you need to upload it to the internet using GitHub + Vercel — both 100% free, no monthly fees.</p>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Create a GitHub account</b><span>If you don't already have one.</span>
+        <div class="link-row"><a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup ↗</a><span class="tag">FREE</span></div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Create a new repository</b><span>Click the "+" at the top → "New repository." Name it anything (e.g. "my-sales-page").</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Upload your HTML file</b><span>Inside the repo, click "Add file → Upload files," and drag in the <code style="font-family:var(--font-mono);color:var(--gold);">index.html</code> you downloaded from FunnelCraft.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Create a Vercel account</b><span>Sign up using the same GitHub account — it's faster.</span>
+        <div class="link-row"><a href="https://vercel.com/signup" target="_blank" rel="noopener">vercel.com/signup ↗</a><span class="tag">FREE</span></div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Import your GitHub repo</b><span>From the Vercel dashboard: "Add New → Project," select your repo, click "Deploy."</span></div></div>
+      <div class="steprow"><div class="st-body"><b>You're live!</b><span>You'll get a link like <code style="font-family:var(--font-mono);color:var(--gold);">yourproject.vercel.app</code> — that's your live sales page.</span></div></div>
+    </div>
+
+    <div class="callout warn">
+      <div class="ic">🔁</div>
+      <div><b>Tip:</b> Whenever you edit your page again in FunnelCraft, you'll need to replace the contents of <code style="font-family:var(--font-mono);">index.html</code> on GitHub (edit → select all → paste the new version) and commit — Vercel will redeploy automatically.</div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderLicense(){
+  return `
+    <div class="eyebrow">Step 7</div>
+    <h1>Save your <span class="accent">License Key</span>.</h1>
+    <p class="lede">This is the key you received when you purchased FunnelCraft™. It unlocks the tool and syncs your saved projects to the cloud — so even if you switch devices, your projects are still there.</p>
+
+    <div class="steplist">
+      <div class="steprow"><div class="st-body"><b>Find your license key</b><span>It's in the email you received after purchase.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Paste it into the unlock screen</b><span>The first time you open FunnelCraft, you'll see "Enter License Key" — enter it there.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Save your first project</b><span>Inside the tool, open "My Projects" → name your project → "Save Current."</span></div></div>
+    </div>
+
+    <div class="callout done">
+      <div class="ic">☁️</div>
+      <div><b>"Synced to your account"</b><div class="muted-line">When you see this message in My Projects, your cloud backup is working. Your projects are safe no matter what happens to your browser.</div></div>
+    </div>
+
+    ${navFooter()}
+  `;
+}
+
+function renderChecklist(){
+  const items = [
+    { id:'c1', title:'Generated my sales page', sub:'All fields completed — offer, brand, payment, etc.' },
+    { id:'c2', title:'Tested the checkout link', sub:'I clicked the CTA button myself and landed on the right payment link.' },
+    { id:'c3', title:'Images display correctly (no black backgrounds)', sub:'Re-uploaded any transparent PNGs if needed.' },
+    { id:'c4', title:'Video plays correctly (if you have one)', sub:'"Allow Embedding" is enabled in YouTube Studio.' },
+    { id:'c5', title:'Deployed to Vercel', sub:'I have a live link I can share.' },
+    { id:'c6', title:'Saved my project in "My Projects"', sub:'Safely backed up to the cloud, not just saved in-browser.' },
+    { id:'c7', title:'Tested it on my phone', sub:'Does it look just as good on mobile?' },
+  ];
+  const checked = JSON.parse(localStorage.getItem('fc_checklist_v1') || '{}');
+  const rows = items.map(it => `
+    <div class="chk-item ${checked[it.id]?'checked':''}" onclick="toggleChk('${it.id}')">
+      <div class="chk-box"></div>
+      <div class="chk-text"><b>${it.title}</b><span>${it.sub}</span></div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="eyebrow">Step 8</div>
+    <h1>Final <span class="accent">Checklist</span> before you go live.</h1>
+    <p class="lede">Before you share your link with potential buyers, double-check these first.</p>
+    <div class="checklist" id="checklist">${rows}</div>
+    ${navFooter("I'm ready →")}
+  `;
+}
+
+function toggleChk(id){
+  const checked = JSON.parse(localStorage.getItem('fc_checklist_v1') || '{}');
+  checked[id] = !checked[id];
+  localStorage.setItem('fc_checklist_v1', JSON.stringify(checked));
+  renderPanel();
+}
+
+function renderDone(){
+  return `
+    <div style="text-align:center; padding-top:20px;">
+      <div class="final-badge">🎉</div>
+      <h1 style="text-align:center;">You're ready to <span class="accent">go live</span>!</h1>
+      <p class="lede" style="margin:0 auto 26px; text-align:center;">Your FunnelCraft™ setup is complete. Time to share your link and start earning.</p>
+
+      <div class="card" style="text-align:left;">
+        <h3>🚀 Next steps</h3>
+        <ul>
+          <li>Share your live link on social media, groups, or your ads.</li>
+          <li>Monitor your Google Sheet for new leads and buyers.</li>
+          <li>Come back here anytime you need a refresher.</li>
+        </ul>
+      </div>
+
+      <div class="callout info" style="text-align:left;">
+        <div class="ic">💬</div>
+        <div>Still have questions? Reach back out to whoever gave you FunnelCraft™ for support.</div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-ghost" onclick="back()">← Back</button>
+      <span class="step-counter">Step ${current+1} of ${STEPS.length}</span>
+      <button class="btn btn-primary" onclick="goTo(0)">Start over</button>
+    </div>
+  `;
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderSidebar();
+renderPanel();
+</script>
+</body>
+</html>
