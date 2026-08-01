@@ -260,6 +260,7 @@
    ============================================================ */
 const STEPS = [
   { group:"Get Started", title:"Welcome", render: renderWelcome },
+  { group:"Get Started", title:"Your Bonuses", render: renderBonuses },
   { group:"Get Started", title:"Get Your Gemini API Key", render: renderGemini },
   { group:"Set Up Payment", title:"Your Payment Link", render: renderPayment },
   { group:"Set Up Payment", title:"Google Sheets (Leads)", render: renderSheets },
@@ -367,6 +368,33 @@ function renderWelcome(){
     </div>
 
     ${navFooter("Let's start →")}
+  `;
+}
+
+function renderBonuses(){
+  return `
+    <div class="eyebrow">✦ Included With Your Purchase</div>
+    <h1>Your <span class="accent">Bonuses</span>.</h1>
+    <p class="lede">Two extra tools come free with FunnelCraft™ — no separate purchase, no extra login. Bookmark these links.</p>
+
+    <div class="card" style="border-color:rgba(139,108,255,0.35);">
+      <h3>📦 Premium SaaS Sales Inventory</h3>
+      <p>A ready-to-use library of high-converting SaaS/software sales page copy and layout inventory you can adapt for any product.</p>
+      <div class="link-row"><a href="https://digiteralevi.github.io/premium_saas_sales_inventory_engine/" target="_blank" rel="noopener">digiteralevi.github.io/premium_saas_sales_inventory_engine ↗</a><span class="tag">BONUS</span></div>
+    </div>
+
+    <div class="card" style="border-color:rgba(212,168,67,0.35);">
+      <h3>📣 AdCraft™ — AI Ad Copy &amp; Follow-Up Generator</h3>
+      <p>Generates scroll-stopping ad hooks, full paid ad sets, organic captions, and a multi-day Email + Messenger follow-up sequence — using the same offer info you already have.</p>
+      <div class="link-row"><a href="https://ad-craft-psi.vercel.app/" target="_blank" rel="noopener">ad-craft-psi.vercel.app ↗</a><span class="tag">BONUS</span></div>
+    </div>
+
+    <div class="callout info">
+      <div class="ic">🔑</div>
+      <div>AdCraft™ uses the same free Gemini API key setup covered in the next step — one key works for both FunnelCraft™ and AdCraft™.</div>
+    </div>
+
+    ${navFooter()}
   `;
 }
 
