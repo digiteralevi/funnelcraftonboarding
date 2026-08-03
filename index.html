@@ -361,6 +361,11 @@ function renderWelcome(){
       <div class="link-row"><a href="https://funnelcraft-ph.vercel.app/" target="_blank" rel="noopener">funnelcraft-ph.vercel.app ↗</a><span class="tag">OPEN APP</span></div>
     </div>
 
+    <div class="callout warn">
+      <div class="ic">🔑</div>
+      <div><b>Heads up:</b> the first time you open FunnelCraft, it'll ask for a License Key before it unlocks. If you haven't received yours yet, message us on Messenger with your proof of payment — full instructions are in Step 7. Feel free to message us now and keep reading in the meantime.</div>
+    </div>
+
     <div class="card">
       <h3>📋 Before You Start</h3>
       <p>You'll need accounts on a few free platforms. All 100% free. Just have your email address ready.</p>
@@ -590,11 +595,19 @@ function renderDeploy(){
 function renderLicense(){
   return `
     <div class="eyebrow">Step 7</div>
-    <h1>Save your <span class="accent">License Key</span>.</h1>
-    <p class="lede">This is the key you received when you purchased FunnelCraft™. It unlocks the tool and syncs your saved projects to the cloud — so even if you switch devices, your projects are still there.</p>
+    <h1>Get and save your <span class="accent">License Key</span>.</h1>
+    <p class="lede">Your license key unlocks the tool and syncs your saved projects to the cloud — so even if you switch devices, your projects are still there. Here's how to get yours.</p>
+
+    <div class="callout warn">
+      <div class="ic">📩</div>
+      <div><b>Your key is not sent automatically.</b><div class="muted-line">After completing your payment, you need to message us directly so we can generate and send your personal license key — this usually takes less than a few hours.</div></div>
+    </div>
 
     <div class="steplist">
-      <div class="steprow"><div class="st-body"><b>Find your license key</b><span>It's in the email you received after purchase.</span></div></div>
+      <div class="steprow"><div class="st-body"><b>Send proof of payment</b><span>Message us on Messenger with a screenshot of your receipt/payment confirmation.</span>
+        <div class="link-row"><a href="https://m.me/digiteralevi" target="_blank" rel="noopener">m.me/digiteralevi ↗</a><span class="tag">MESSAGE US</span></div>
+      </div></div>
+      <div class="steprow"><div class="st-body"><b>Wait for your license key</b><span>We'll reply with a key that looks like <code style="font-family:var(--font-mono);color:var(--gold);">FC-yourname-001</code> — this is yours only, please don't share it.</span></div></div>
       <div class="steprow"><div class="st-body"><b>Paste it into the unlock screen</b><span>The first time you open FunnelCraft, you'll see "Enter License Key" — enter it there.</span></div></div>
       <div class="steprow"><div class="st-body"><b>Save your first project</b><span>Inside the tool, open "My Projects" → name your project → "Save Current."</span></div></div>
     </div>
